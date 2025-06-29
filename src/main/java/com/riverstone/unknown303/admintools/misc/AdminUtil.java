@@ -7,7 +7,7 @@ import com.google.common.collect.Multimap;
 //import dev.jorel.commandapi.arguments.StringArgument;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.CustomArgument;
-import dev.jorel.commandapi.arguments.StringArgument;
+import dev.jorel.commandapi.arguments.GreedyStringArgument;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -25,18 +25,16 @@ public class AdminUtil {
             ArrayListMultimap.create();
     public static final AttributeModifier ADMIN_TOOLS_MODIFIER =
             new AttributeModifier(UUID.fromString("40e32752-41a2-4593-8aed-b5c909f6df71"),
-                    "admin_tools_damage", Double.MAX_VALUE,
+                    "admin_tools_damage", 32768D,
                     AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
 
     private static final HashMap<String, ItemStack> VALID_STACKS =
             new HashMap<>();
 
-    public static final CustomArgument<ItemStack, String> CUSTOM_ITEM_STACKS_ARGUMENT =
-            (CustomArgument<ItemStack, String>) new CustomArgument<>(new StringArgument("item"), info ->
-                    VALID_STACKS.get(info.currentInput().replaceAll("" + '"',
-                            "")))
-                    .replaceSuggestions(ArgumentSuggestions.strings(
-                            VALID_STACKS.keySet()));
+    public static final CustomArgument<ItemStack, String> ADMIN_TOOL_ITEM_ARGUMENT =
+            (CustomArgument<ItemStack, String>) new CustomArgument<>(new GreedyStringArgument("item"),
+                    info -> VALID_STACKS.get(info.currentInput()))
+                    .replaceSuggestions(ArgumentSuggestions.strings(VALID_STACKS.keySet()));
 
     public static void register() {
         ADMIN_TOOLS_MODIFIERS.put(Attribute.GENERIC_ATTACK_DAMAGE, ADMIN_TOOLS_MODIFIER);
@@ -47,11 +45,11 @@ public class AdminUtil {
         player.setPlayerListName(name);
     }
 
-    public static void addValidCustomItemStack(String id, ItemStack itemStack) {
+    public static void addValidAdminTool(String id, ItemStack itemStack) {
         VALID_STACKS.put(id, itemStack);
     }
 
-    public static void addAllValidCustomItemStacks(Map<String, ItemStack> validStacks) {
+    public static void addAllValidAdminTools(Map<String, ItemStack> validStacks) {
         VALID_STACKS.putAll(validStacks);
     }
 

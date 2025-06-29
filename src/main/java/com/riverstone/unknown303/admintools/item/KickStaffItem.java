@@ -1,7 +1,6 @@
 package com.riverstone.unknown303.admintools.item;
 
 import com.riverstone.unknown303.admintools.misc.AdminUtil;
-import com.riverstone.unknown303.admintools.misc.Commands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -27,24 +26,25 @@ public class KickStaffItem implements Listener {
         meta.setCustomModelData(34);
         meta.setDisplayName("%s%sKick Staff".formatted(ChatColor.BOLD, ChatColor.YELLOW));
         KICK_STAFF.setItemMeta(meta);
-        AdminUtil.addValidCustomItemStack(AdminUtil.toId(plugin, "kick_staff"),
+        AdminUtil.addValidAdminTool(AdminUtil.toId(plugin, "kick_staff"),
                 KICK_STAFF);
     }
 
     @EventHandler
-    public void onEntityHit(EntityDamageByEntityEvent event) {
+    public static void onEntityHit(EntityDamageByEntityEvent event) {
         Entity entity = event.getEntity();
         Entity entity1 = event.getDamager();
         if (entity instanceof Player target &&
                 entity1 instanceof Player attacker) {
             if (attacker.getInventory().getItemInMainHand().isSimilar(KICK_STAFF)) {
                 target.getInventory().clear();
+                event.setDamage(Double.MAX_VALUE);
                 target.kickPlayer(kickMessage(attacker));
             }
         }
     }
 
-    private String kickMessage(Player attacker) {
+    private static String kickMessage(Player attacker) {
         return "%s%sYou have been kicked by %s%s".formatted(ChatColor.BOLD,
                 ChatColor.WHITE, ChatColor.RESET, AdminUtil.getAnonymousName(attacker));
     }

@@ -1,5 +1,5 @@
 name: AdminTools
-version: 1.0-SNAPSHOT-11
+version: 1.0-SNAPSHOT-15
 main: com.riverstone.unknown303.admintools.AdminToolsPlugin
 description: A PaperMC plugin adding AdminTools to Minecraft!
 author: Unknown_303

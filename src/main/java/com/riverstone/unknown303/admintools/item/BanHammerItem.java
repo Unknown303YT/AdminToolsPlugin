@@ -1,7 +1,6 @@
 package com.riverstone.unknown303.admintools.item;
 
 import com.riverstone.unknown303.admintools.misc.AdminUtil;
-import com.riverstone.unknown303.admintools.misc.Commands;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,30 +27,31 @@ public class BanHammerItem implements Listener {
         meta.setCustomModelData(17);
         meta.setDisplayName("%s%sBan Hammer".formatted(ChatColor.BOLD, ChatColor.RED));
         BAN_HAMMER.setItemMeta(meta);
-        AdminUtil.addValidCustomItemStack(AdminUtil.toId(plugin, "ban_hammer"),
+        AdminUtil.addValidAdminTool(AdminUtil.toId(plugin, "ban_hammer"),
                 BAN_HAMMER);
     }
 
     @EventHandler
-    public void onEntityHit(EntityDamageByEntityEvent event) {
+    public static void onEntityHit(EntityDamageByEntityEvent event) {
         Entity entity = event.getEntity();
         Entity entity1 = event.getDamager();
         if (entity instanceof Player target &&
                 entity1 instanceof Player attacker) {
             if (attacker.getInventory().getItemInMainHand().isSimilar(BAN_HAMMER)) {
                 target.getInventory().clear();
+                event.setDamage(Double.MAX_VALUE);
                 banPlayer(target, attacker);
             }
         }
     }
 
-    private void banPlayer(Player target, Player attacker) {
+    private static void banPlayer(Player target, Player attacker) {
         Bukkit.getBanList(BanList.Type.NAME).addBan(target.getName(),
                 banMessage(attacker), null, AdminUtil.getAnonymousName(attacker));
         target.kickPlayer(banMessage(attacker));
     }
 
-    private String banMessage(Player attacker) {
+    private static String banMessage(Player attacker) {
         String firstLine = "You have been banned by %s%s".formatted(ChatColor.RESET,
                 AdminUtil.getAnonymousName(attacker));
         return "%s%s%s\n%s%sThe Ban Hammer has spoken!".formatted(ChatColor.BOLD,

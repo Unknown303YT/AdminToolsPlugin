@@ -3,9 +3,7 @@ package com.riverstone.unknown303.admintools.misc;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.CommandPermission;
 import dev.jorel.commandapi.arguments.BooleanArgument;
-import dev.jorel.commandapi.arguments.GreedyStringArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
-import dev.jorel.commandapi.arguments.StringArgument;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,12 +33,12 @@ public class Commands {
 
     public static final CommandAPICommand GET_ADMIN_TOOLS_COMMAND =
             new CommandAPICommand("getAdminTools")
-                    .withArguments(new GreedyStringArgument("item"))
+                    .withArguments(AdminUtil.ADMIN_TOOL_ITEM_ARGUMENT)
                     .withAliases("getAdminTool", "adminTool", "giveAdmin",
                             "giveAdminTool", "giveAdminTools")
                     .withPermission(CommandPermission.OP)
                     .executesPlayer((player, args) -> {
-                        player.sendMessage((String) args.get("item"));
+                        player.getInventory().addItem((ItemStack) args.get("item"));
                     });
 
     public static void register(JavaPlugin plugin) {
