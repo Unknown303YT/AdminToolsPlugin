@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.riverstone.unknown303'
-version = '1.0-SNAPSHOT-11'
+version = '1.0-SNAPSHOT-15'
 
 repositories {
     mavenCentral()

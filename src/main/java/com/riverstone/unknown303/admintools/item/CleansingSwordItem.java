@@ -1,7 +1,6 @@
 package com.riverstone.unknown303.admintools.item;
 
 import com.riverstone.unknown303.admintools.misc.AdminUtil;
-import com.riverstone.unknown303.admintools.misc.Commands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -27,12 +26,12 @@ public class CleansingSwordItem implements Listener {
         meta.setDisplayName("%s%sCleansing Sword".formatted(ChatColor.BOLD,
                 ChatColor.GREEN));
         CLEANSING_SWORD.setItemMeta(meta);
-        AdminUtil.addValidCustomItemStack(AdminUtil.toId(plugin, "cleansing_sword"),
+        AdminUtil.addValidAdminTool(AdminUtil.toId(plugin, "cleansing_sword"),
                 CLEANSING_SWORD);
     }
 
     @EventHandler
-    public void onEntityHit(EntityDamageByEntityEvent event) {
+    public static void onEntityHit(EntityDamageByEntityEvent event) {
         Entity entity = event.getEntity();
         Entity entity1 = event.getDamager();
         if (entity instanceof Player target
